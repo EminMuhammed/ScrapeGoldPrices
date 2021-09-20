@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-start_year = 2019
+start_year = 2021
 finish_year = 2021
 baseurl = "https://altin.in/arsiv"
 url = f"https://altin.in/arsiv/2021"
@@ -183,4 +183,32 @@ def save_data(data, name):
     df.to_excel(f"{name}.xlsx")
 
 
-save_data(data, "altinfiyatlari_yeni")
+def save_json(data, name):
+    """
+    convert list to json file
+
+    Parameters
+    ----------
+    data: list
+    list with gold information
+
+    name: string
+    json file name
+
+    Returns
+    -------
+    None
+    """
+    dictionary = {}
+    for i in data:
+        tarih = i[0].split("/arsiv/")[1]
+        alis = i[1]
+        satis = i[2]
+        dictionary[tarih] = [alis, satis]
+
+    with open(f'{name}.json', 'w') as fp:
+        json.dump(dictionary, fp)
+
+
+save_data(data, "altinfiyatlari")
+save_json(data, "altinfiyatlari")
